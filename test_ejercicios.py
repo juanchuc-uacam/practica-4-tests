@@ -186,20 +186,24 @@ def test_checar_victoria_true_y_false():
     func_ct = try_import("crear_tablero", "crear_tablero")
     func_cm = try_import("colocar_minas", "colocar_minas")
     func_cn = try_import("calcular_numeros", "calcular_numeros")
-    func_v = try_import("inicializar_visible", "inicializar_visible")
+    func_v  = try_import("inicializar_visible", "inicializar_visible")
     func_rc = try_import("revelar_celda", "revelar_celda")
 
+    # Caso False: 2x2, sin revelar nada aún
     base = func_ct(2, 2, 0)
     minas = func_cm(base, [(0, 0)])
     nums = func_cn(minas)
-    vis = func_v(2, 2)
-
-    # aún no ganamos
+    vis  = func_v(2, 2)
     assert func_cv(minas, vis) is False
 
-    # revelamos todas las no-minas
-    vis, _ = func_rc(minas, nums, vis, 1, 1)  # expandirá todo excepto la mina
-    assert func_cv(minas, vis) is True
+    # Caso True: 3x3, una mina en (0,0); revelar (2,2) (valor 0) expande todo lo no-mina
+    base2 = func_ct(3, 3, 0)
+    minas2 = func_cm(base2, [(0, 0)])
+    nums2 = func_cn(minas2)
+    vis2  = func_v(3, 3)
+    vis2, _ = func_rc(minas2, nums2, vis2, 2, 2)
+    assert func_cv(minas2, vis2) is True
+
 
 def test_formatear_tablero_basico_y_mostrar_minas():
     func_ft = try_import("formatear_tablero", "formatear_tablero")
